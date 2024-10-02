@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send a Message to Telegram Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('yourname.jpg'); /* Background image */
+            background-size: cover; /* Cover the entire viewport */
+            background-position: center; /* Center the image */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: white; /* Change text color for better contrast */
+        }
+        
+        h2 {
+            color: #d75c6a; /* Title color */
+        }
+
+        #messageForm {
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background for form */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: none; /* Prevent resizing */
+            height: 100px; /* Set a fixed height for the textarea */
+        }
+
+        button {
+            background-color: #d75c6a; /* Button color */
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #c44d5d; /* Darker shade on hover */
+        }
+    </style>
+</head>
+<body>
+    <h2>Leave a Message</h2>
+    <form id="messageForm">
+        <input type="text" id="name" placeholder="Your Name" required>
+        <textarea id="message" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+
+    <script>
+        const botToken = '7531427301:AAEko6cGz_rMAp-EWFpLqbMTZKEHZH4iyx8';  // Your bot token
+        const chatId = '-1002335926093';  // Your channel chat ID (the negative number)
+
+        document.getElementById('messageForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const message = document.getElementById('message').value;
+            const text = `New message from ${name}:\n${message}`;
+            
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
+            
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    alert('Message sent successfully!');
+                    document.getElementById('messageForm').reset(); // Reset the form after submission
+                } else {
+                    alert('Error sending message.');
+                }
+            })
+            .catch(error => {
+                alert('Error sending message.');
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
